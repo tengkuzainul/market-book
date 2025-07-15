@@ -1,61 +1,248 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+![Tengku Zainul](public/readme/Header-repo.png)
+
+<h1 align="center">Book Shop - Sistem Toko Buku Online</h1>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <a href="#fitur">Fitur</a> •
+  <a href="#teknologi">Teknologi</a> •
+  <a href="#instalasi">Cara Instalasi</a> •
+  <a href="#penggunaan">Cara Penggunaan</a> •
+  <a href="#struktur">Struktur Proyek</a> •
+  <a href="#screenshot">Screenshot</a> •
+  <a href="#kontribusi">Kontribusi</a> •
+  <a href="#lisensi">Lisensi</a>
 </p>
 
-## About Laravel
+<p align="center">
+  Book Shop adalah aplikasi e-commerce toko buku berbasis web yang dibangun dengan framework Laravel. Aplikasi ini menyediakan platform untuk penjualan buku online dengan fitur pengelolaan inventaris, pesanan, pembayaran, dan refund.
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<a id="fitur"></a>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ✨ Fitur Utama
 
-## Learning Laravel
+### Customer (Frontend)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   **Autentikasi Pengguna** - Login, register, reset password
+-   **Pencarian & Katalog Produk** - Filter berdasarkan kategori, pencarian, sorting
+-   **Keranjang Belanja** - Menambah/menghapus item, update kuantitas
+-   **Proses Checkout** - Alamat pengiriman, metode pengiriman
+-   **Pembayaran Online** - Upload bukti pembayaran
+-   **Pelacakan Pesanan** - Status pesanan dengan timeline
+-   **Manajemen Akun** - Update profil, alamat, password
+-   **Riwayat Pesanan** - Daftar pesanan, detail pesanan
+-   **Sistem Refund** - Permintaan refund, pelacakan status refund
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Admin (Backend)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **Dashboard Admin** - Statistik penjualan, pendapatan, pesanan terbaru
+-   **Manajemen Produk** - CRUD buku, upload gambar, stok
+-   **Manajemen Kategori** - CRUD kategori buku
+-   **Manajemen Pesanan** - Lihat, proses, update status pesanan
+-   **Manajemen Pembayaran** - Validasi bukti pembayaran
+-   **Manajemen Refund** - Proses permintaan refund
+-   **Pengaturan Rekening** - Pengaturan rekening pembayaran
+-   **Manajemen Pengguna** - CRUD pengguna, pengaturan peran
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+<a id="teknologi"></a>
 
-### Premium Partners
+## 🛠️ Teknologi
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Backend
 
-## Contributing
+-   **[Laravel 10](https://laravel.com/)** - Framework PHP
+-   **[MySQL](https://mysql.com/)** - Database
+-   **[Eloquent ORM](https://laravel.com/docs/eloquent)** - Object-Relational Mapping
+-   **[Blade](https://laravel.com/docs/blade)** - Template Engine
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Frontend
 
-## Code of Conduct
+-   **[Bootstrap 5](https://getbootstrap.com/)** - Framework CSS
+-   **[Font Awesome](https://fontawesome.com/)** - Icon Library
+-   **[jQuery](https://jquery.com/)** - JavaScript Library
+-   **[SweetAlert2](https://sweetalert2.github.io/)** - JavaScript Popup Boxes
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Tools & Library
 
-## Security Vulnerabilities
+-   **[Laragon](https://laragon.org/)** - Development Environment
+-   **[Composer](https://getcomposer.org/)** - Dependency Manager
+-   **[Git](https://git-scm.com/)** - Version Control
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+<a id="instalasi"></a>
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🚀 Cara Instalasi
+
+### Prasyarat
+
+-   PHP >= 8.2.\*
+-   MySQL >= 8.\*
+-   Composer
+
+### Langkah Instalasi
+
+1. **Clone repositori**
+
+```bash
+git clone https://github.com/tengkuzainul/market-book.git
+cd market-book
+```
+
+2. **Install dependensi PHP**
+
+```bash
+composer install
+```
+
+3. **Siapkan file environment**
+
+```bash
+cp .env.example .env
+```
+
+4. **Konfigurasi database di file .env**
+
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=db_book_shop
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+5. **Jalankan migrasi dan seeder**
+
+```bash
+php artisan migrate --seed
+```
+
+6. **Jalankan server**
+
+```bash
+php artisan serve
+```
+
+7. **Akses aplikasi**
+   Buka browser dan akses: `http://localhost:8000`
+
+---
+
+<a id="penggunaan"></a>
+
+## 📝 Cara Penggunaan
+
+### Akses Admin
+
+-   URL: `http://localhost:8000/login`
+-   Email: admin@shopping.test
+-   Password: admin2025
+
+### Akses Customer
+
+-   URL: `http://localhost:8000/login`
+-   Email: customer@shopping.test
+-   Password: password
+
+### Alur Penggunaan Customer
+
+1. Login atau register akun baru
+2. Browse katalog buku
+3. Tambahkan buku ke keranjang
+4. Lakukan checkout pesanan
+5. Upload bukti pembayaran
+6. Lacak status pesanan
+
+### Alur Penggunaan Admin
+
+1. Login ke dashboard admin
+2. Kelola produk dan kategori
+3. Validasi pembayaran pesanan
+4. Update status pesanan
+5. Proses permintaan refund jika ada
+
+---
+
+<a id="struktur"></a>
+
+## 📂 Struktur Proyek
+
+```
+app/
+├── Http/
+│   ├── Controllers/          # Controller aplikasi
+│   ├── Middleware/           # Middleware
+│   └── Requests/             # Form requests
+├── Models/                   # Model database
+│   ├── Buku.php
+│   ├── KategoriBuku.php
+│   ├── RekeningPembayaran.php
+│   └── User.php
+├── View/                     # View composers
+config/                       # File konfigurasi
+database/
+├── migrations/               # Database migrations
+├── factories/                # Model factories untuk testing
+└── seeders/                  # Database seeders
+public/                       # Asset publik
+├── frontend/                 # Asset frontend
+└── image/                    # Gambar produk dan bukti pembayaran
+resources/
+├── views/                    # Blade templates
+│   ├── admin/                # Template admin
+│   ├── customer/             # Template customer
+│   └── refund/               # Template refund
+routes/                       # Definisi rute
+└── web.php                   # Rute web
+```
+
+---
+
+<a id="screenshot"></a>
+
+## 📸 Screenshot
+
+### Frontend
+
+![Homepage](public/readme/homepage.png)
+![Product Detail](public/readme/product-detail.png)
+![Shopping Cart](public/readme/cart.png)
+![Order History](public/readme/orders.png)
+
+### Backend
+
+![Admin Dashboard](public/readme/dashboard.png)
+![Product Management](public/readme/products.png)
+![Order Management](public/readme/orders-admin.png)
+![Refund Management](public/readme/refunds.png)
+
+---
+
+<a id="kontribusi"></a>
+
+## 👨‍💻 Kontribusi
+
+Kontribusi dan saran sangat diterima untuk pengembangan aplikasi ini.
+
+1. Fork repositori ini
+2. Buat branch fitur baru (`git checkout -b feature/amazing-feature`)
+3. Commit perubahan Anda (`git commit -m 'Add some amazing feature'`)
+4. Push ke branch (`git push origin feature/amazing-feature`)
+5. Buat Pull Request
+
+---
+
+<a id="lisensi"></a>
+
+## 📄 Lisensi
+
+Didistribusikan di bawah lisensi MIT. Lihat [LICENSE](LICENSE) untuk informasi lebih lanjut.
+
+---
+
+<p align="center">Dibuat dengan ❤️ oleh <a href="https://github.com/tengkuzainul">tengkuzainul</a></p>
