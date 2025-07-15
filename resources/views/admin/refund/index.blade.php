@@ -43,14 +43,12 @@
                                     <td>Rp. {{ number_format($refund->jumlah, 0, ',', '.') }}</td>
                                     <td>{{ $refund->created_at->format('d M Y H:i') }}</td>
                                     <td>
-                                        @if ($refund->status == 'pending')
-                                            <span class="badge bg-warning text-dark">Pending</span>
-                                        @elseif($refund->status == 'approved')
-                                            <span class="badge bg-success">Approved</span>
-                                        @elseif($refund->status == 'rejected')
-                                            <span class="badge bg-danger">Rejected</span>
-                                        @elseif($refund->status == 'completed')
-                                            <span class="badge bg-primary">Completed</span>
+                                        @if ($refund->status == 'diproses')
+                                            <span class="badge bg-warning text-dark">Menunggu</span>
+                                        @elseif($refund->status == 'selesai')
+                                            <span class="badge bg-success">Selesai</span>
+                                        @elseif($refund->status == 'ditolak')
+                                            <span class="badge bg-danger">Ditolak</span>
                                         @endif
                                     </td>
                                     <td>

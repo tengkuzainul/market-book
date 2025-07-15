@@ -49,8 +49,8 @@
 
     // Get refund statistics
     $totalRefunds = Refund::count() ?: 0;
-    $pendingRefunds = Refund::where('status', 'pending')->count() ?: 0;
-    $refundAmount = Refund::where('status', 'completed')->sum('jumlah') ?: 0;
+    $pendingRefunds = Refund::where('status', 'diproses')->count() ?: 0;
+    $refundAmount = Refund::where('status', 'selesai')->sum('jumlah') ?: 0;
 } catch (\Exception $e) {
     // Log error but continue displaying the dashboard
     \Log::error('Dashboard calculation error: ' . $e->getMessage());

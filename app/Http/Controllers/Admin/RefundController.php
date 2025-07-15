@@ -35,7 +35,7 @@ class RefundController extends Controller
           public function process(Request $request, Refund $refund)
           {
                     $request->validate([
-                              'status' => 'required|in:approved,rejected',
+                              'status' => 'required|in:selesai,ditolak',
                               'catatan_admin' => 'nullable|string|max:500',
                     ]);
 
@@ -44,17 +44,18 @@ class RefundController extends Controller
                     $refund->catatan_admin = $request->catatan_admin;
                     $refund->save();
 
-                    // If approved, update the order status
-                    if ($request->status == 'approved') {
+                    // If completed (selesai), update the order status
+                    if ($request->status == 'selesai') {
                               $refund->pesanan->status = 'refunded';
                               $refund->pesanan->save();
-                    } elseif ($request->status == 'rejected') {
-                              // If rejected, revert the order status to "cancelled" only
-                              $refund->pesanan->status = 'cancelled';
+                    } elseif ($request->status == 'ditolak') {
+                              // If rejected (ditolak), revert the order status to "dibatalkan" only
+                              $refund->pesanan->status = 'dibatalkan';
                               $refund->pesanan->save();
                     }
 
-                    Alert::success('Success', 'Refund has been ' . $request->status);
+                    $statusText = $request->status == 'selesai' ? 'disetujui dan selesai' : 'ditolak';
+                    Alert::success('Berhasil', 'Refund telah ' . $statusText);
                     return redirect()->route('admin.refunds.index');
           }
 
@@ -76,7 +77,7 @@ class RefundController extends Controller
 
                               // Update the refund record
                               $refund->bukti_refund = 'image/bukti_refund/' . $fileName;
-                              $refund->status = 'completed';
+                              $refund->status = 'selesai';
                               $refund->save();
 
                               // Update the order status

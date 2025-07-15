@@ -40,7 +40,7 @@
                             </div>
                             <div class="col-auto">
                                 <span
-                                    class="badge @if ($refund->status == 'pending') bg-warning text-dark @elseif($refund->status == 'approved') bg-success @elseif($refund->status == 'rejected') bg-danger @elseif($refund->status == 'completed') bg-primary @endif px-2 py-1">
+                                    class="badge @if ($refund->status == 'diproses') bg-warning text-dark @elseif($refund->status == 'selesai') bg-success @elseif($refund->status == 'ditolak') bg-danger @endif px-2 py-1">
                                     {{ ucfirst($refund->status) }}
                                 </span>
                             </div>
@@ -90,7 +90,7 @@
                             </div>
                         </div>
 
-                        @if ($refund->status == 'pending')
+                        @if ($refund->status == 'diproses')
                             <div class="mt-4">
                                 <form action="{{ route('admin.refunds.process', $refund) }}" method="POST"
                                     class="needs-validation" novalidate>
@@ -99,12 +99,12 @@
                                         <label class="form-label">Admin Decision</label>
                                         <div class="form-check mb-2">
                                             <input class="form-check-input" type="radio" id="status_approved"
-                                                name="status" value="approved" required>
+                                                name="status" value="selesai" required>
                                             <label for="status_approved" class="form-check-label">Approve Refund</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" id="status_rejected"
-                                                name="status" value="rejected">
+                                                name="status" value="ditolak">
                                             <label for="status_rejected" class="form-check-label">Reject Refund</label>
                                         </div>
                                     </div>
@@ -118,7 +118,7 @@
                                     <button type="submit" class="btn btn-primary">Process Refund</button>
                                 </form>
                             </div>
-                        @elseif($refund->status == 'approved' && !$refund->bukti_refund)
+                        @elseif($refund->status == 'selesai' && !$refund->bukti_refund)
                             <div class="mt-4">
                                 <form action="{{ route('admin.refunds.upload-proof', $refund) }}" method="POST"
                                     enctype="multipart/form-data" class="needs-validation" novalidate>

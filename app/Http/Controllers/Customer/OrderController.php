@@ -199,7 +199,7 @@ class OrderController extends Controller
 
             // Update order status
             $pesanan->update([
-                'status' => 'cancelled'
+                'status' => 'dibatalkan'
             ]);
 
             DB::commit();

@@ -22,9 +22,9 @@ class RefundController extends Controller
                     }
 
                     // Check if the order is in a valid state for refund
-                    if (!in_array($pesanan->status, ['cancelled'])) {
-                              Alert::error('Error', 'This order cannot be refunded');
-                              return redirect()->route('orders.show', $pesanan);
+                    if (!in_array($pesanan->status, ['dibatalkan'])) {
+                              Alert::error('Error', 'Pesanan ini tidak dapat di-refund');
+                              return redirect()->route('customer.orders.show', $pesanan);
                     }
 
                     // Check if a refund request already exists
@@ -65,13 +65,13 @@ class RefundController extends Controller
                               'nomor_rekening' => $request->nomor_rekening,
                               'nama_pemilik_rekening' => $request->nama_pemilik_rekening,
                               'nama_bank' => $request->nama_bank,
-                              'status' => 'pending',
+                              'status' => 'diproses', // Menggunakan 'diproses' sesuai definisi enum
                               'alasan_pembatalan' => $request->alasan_pembatalan,
                     ]);
 
                     $refund->save();
 
-                    Alert::success('Success', 'Refund request has been submitted');
+                    Alert::success('Berhasil', 'Permintaan refund berhasil diajukan');
                     return redirect()->route('refunds.show', $refund);
           }
 

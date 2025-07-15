@@ -150,7 +150,7 @@
                                         <span class="badge bg-primary">Diantarkan</span>
                                     @elseif($pesanan->status == 'selesai')
                                         <span class="badge bg-success">Selesai</span>
-                                    @elseif($pesanan->status == 'dibatalkan' || $pesanan->status == 'cancelled')
+                                    @elseif($pesanan->status == 'dibatalkan')
                                         <span class="badge bg-danger">Dibatalkan</span>
                                     @elseif($pesanan->status == 'refunded')
                                         <span class="badge bg-secondary">Refunded</span>
@@ -183,12 +183,11 @@
                                                     'diantarkan' => 'fa fa-truck',
                                                     'selesai' => 'fa fa-flag-checkered',
                                                     'dibatalkan' => 'fa fa-times-circle',
-                                                    'cancelled' => 'fa fa-times-circle',
                                                     'refunded' => 'fa fa-undo',
                                                 ];
 
                                                 // Handle special cases
-                                                if (in_array($currentStatus, ['dibatalkan', 'cancelled', 'refunded'])) {
+                                                if (in_array($currentStatus, ['dibatalkan', 'refunded'])) {
                                                     $progressPercent = 0;
                                                     $specialStatus = true;
                                                 } else {
@@ -241,9 +240,9 @@
                                             </div>
                                         </div>
 
-                                        @if (in_array($currentStatus, ['dibatalkan', 'cancelled', 'refunded']))
+                                        @if (in_array($currentStatus, ['dibatalkan', 'refunded']))
                                             <div class="timeline-special-status mt-3 text-center">
-                                                @if ($currentStatus == 'dibatalkan' || $currentStatus == 'cancelled')
+                                                @if ($currentStatus == 'dibatalkan')
                                                     <div class="badge bg-danger p-2">
                                                         <i class="fa fa-times-circle me-1"></i> Pesanan Dibatalkan
                                                     </div>
@@ -340,7 +339,7 @@
                                         </form>
                                     @endif
 
-                                    @if (($pesanan->status == 'dibatalkan' || $pesanan->status == 'cancelled') && !$pesanan->refund)
+                                    @if ($pesanan->status == 'dibatalkan' && !$pesanan->refund)
                                         <a href="{{ route('refunds.create', $pesanan->id) }}"
                                             class="btn btn-warning">
                                             <i class="fa fa-money-bill me-2"></i> Ajukan Pengembalian Dana
