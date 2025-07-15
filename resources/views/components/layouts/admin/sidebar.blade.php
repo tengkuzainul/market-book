@@ -51,48 +51,22 @@
                 </li>
 
                 <li class="pc-item pc-caption">
-                    <label>Other</label>
-                    <i class="ti ti-brand-chrome"></i>
+                    <label>Transaksi</label>
+                    <i class="ti ti-shopping-cart"></i>
                 </li>
-                <li class="pc-item pc-hasmenu">
-                    <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti-menu"></i></span><span
-                            class="pc-mtext">Menu
-                            levels</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
-                    <ul class="pc-submenu">
-                        <li class="pc-item"><a class="pc-link" href="#!">Level 2.1</a></li>
-                        <li class="pc-item pc-hasmenu">
-                            <a href="#!" class="pc-link">Level 2.2<span class="pc-arrow"><i
-                                        data-feather="chevron-right"></i></span></a>
-                            <ul class="pc-submenu">
-                                <li class="pc-item"><a class="pc-link" href="#!">Level 3.1</a></li>
-                                <li class="pc-item"><a class="pc-link" href="#!">Level 3.2</a></li>
-                                <li class="pc-item pc-hasmenu">
-                                    <a href="#!" class="pc-link">Level 3.3<span class="pc-arrow"><i
-                                                data-feather="chevron-right"></i></span></a>
-                                    <ul class="pc-submenu">
-                                        <li class="pc-item"><a class="pc-link" href="#!">Level 4.1</a></li>
-                                        <li class="pc-item"><a class="pc-link" href="#!">Level 4.2</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="pc-item pc-hasmenu">
-                            <a href="#!" class="pc-link">Level 2.3<span class="pc-arrow"><i
-                                        data-feather="chevron-right"></i></span></a>
-                            <ul class="pc-submenu">
-                                <li class="pc-item"><a class="pc-link" href="#!">Level 3.1</a></li>
-                                <li class="pc-item"><a class="pc-link" href="#!">Level 3.2</a></li>
-                                <li class="pc-item pc-hasmenu">
-                                    <a href="#!" class="pc-link">Level 3.3<span class="pc-arrow"><i
-                                                data-feather="chevron-right"></i></span></a>
-                                    <ul class="pc-submenu">
-                                        <li class="pc-item"><a class="pc-link" href="#!">Level 4.1</a></li>
-                                        <li class="pc-item"><a class="pc-link" href="#!">Level 4.2</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                <li class="pc-item">
+                    <a href="{{ route('admin.orders.index') }}"
+                        class="pc-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
+                        <span class="pc-micon"><i class="ti ti-clipboard-list"></i></span>
+                        <span class="pc-mtext">Manajemen Pesanan</span>
+                    </a>
+                </li>
+                <li class="pc-item">
+                    <a href="{{ route('admin.refunds.index') }}"
+                        class="pc-link {{ request()->routeIs('admin.refunds.*') ? 'active' : '' }}">
+                        <span class="pc-micon"><i class="ti ti-cash-banknote-off"></i></span>
+                        <span class="pc-mtext">Manajemen Refund</span>
+                    </a>
                 </li>
             </ul>
         </div>

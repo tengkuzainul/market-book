@@ -50,7 +50,7 @@
                             </thead>
                             <tbody>
                                 @forelse ($bukus as $buku)
-                                    <tr>
+                                    <tr class="{{ $buku->stok <= $buku->min_stok ? 'bg-danger bg-opacity-10' : '' }}">
                                         <td class="d-flex align-items-center gap-2">
                                             <a href="#" data-bs-toggle="modal"
                                                 data-bs-target="#detailModal{{ $buku->id }}">
@@ -134,6 +134,15 @@
                         @endforelse
                     </tbody>
                 </table>
+                <div class="mt-3">
+                    <div class="alert alert-danger alert-dismissible fade show py-2" role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="ti ti-alert-circle me-2"></i>
+                            <small>Baris dengan latar merah menandakan buku dengan stok kurang dari atau sama
+                                dengan minimal stok.</small>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -1,4 +1,46 @@
 <x-layouts.frontend.master :pageName="$pageName ?? $book->judul">
+    <style>
+        /* Custom styling for quantity input */
+        .quantity-wrapper {
+            position: relative;
+        }
+
+        .quantity .form-control:focus {
+            box-shadow: none;
+            border-color: #28a745;
+        }
+
+        .quantity .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 45px;
+            width: 45px;
+            padding: 0;
+        }
+
+        .quantity .btn-minus {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .quantity .btn-plus {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        /* Hide number input arrows */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+
     <!-- Hero Start -->
     <div class="container-fluid py-5 mb-5 hero-header">
         <div class="container py-5">
@@ -66,7 +108,8 @@
                                     <div>
                                         <p class="mb-0"><strong>Penulis:</strong> {{ $book->penulis }} |
                                             <strong>Penerbit:</strong> {{ $book->penerbit }} | <strong>Tahun
-                                                Terbit:</strong> {{ $book->tahun_terbit }}</p>
+                                                Terbit:</strong> {{ $book->tahun_terbit }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -87,24 +130,40 @@
 
                     <h2 class="text-primary mb-4">Rp {{ number_format($book->harga, 0, ',', '.') }}</h2>
 
-                    <div class="d-flex align-items-center mb-5">
-                        <div class="input-group quantity mb-0" style="width: 120px;">
-                            <div class="input-group-btn">
-                                <button class="btn btn-secondary btn-minus">
-                                    <i class="fa fa-minus"></i>
-                                </button>
+                    <form action="{{ route('customer.cart.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="buku_id" value="{{ $book->id }}">
+                        <div class="d-flex flex-wrap align-items-center mb-5 gap-3">
+                            <div class="quantity-wrapper">
+                                <label class="form-label fw-bold mb-2">Jumlah</label>
+                                <div class="input-group quantity" style="width: 150px;">
+                                    <button type="button" class="btn btn-primary btn-minus" onclick="decrementQty()">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <input type="number" name="jumlah"
+                                        class="form-control bg-light fw-bold fs-5 text-center border-primary"
+                                        value="1" min="1" max="{{ $book->stok }}" id="qty-input"
+                                        style="height: 45px;">
+                                    <button type="button" class="btn btn-primary btn-plus"
+                                        onclick="incrementQty({{ $book->stok }})">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                                <small class="text-muted d-block mt-1">Stok tersedia: {{ $book->stok }}</small>
                             </div>
-                            <input type="text" class="form-control text-center" value="1">
-                            <div class="input-group-btn">
-                                <button class="btn btn-secondary btn-plus">
-                                    <i class="fa fa-plus"></i>
+
+                            <div class="mt-3 mt-sm-0">
+                                <button type="submit" class="btn btn-primary btn-lg px-4 py-3"
+                                    {{ $book->stok <= 0 ? 'disabled' : '' }}>
+                                    <i class="fa fa-shopping-bag me-2"></i> Tambahkan ke Keranjang
                                 </button>
+                                @if ($book->stok <= 0)
+                                    <div class="text-danger mt-2"><i class="fas fa-exclamation-circle"></i> Stok habis
+                                    </div>
+                                @endif
                             </div>
                         </div>
-                        <button class="btn btn-primary px-4 ms-3">
-                            <i class="fa fa-shopping-bag me-2"></i> Tambahkan ke Keranjang
-                        </button>
-                    </div>
+                    </form>
                 </div>
             </div>
             <div class="row mt-5">
@@ -131,7 +190,8 @@
                                             data-bs-target="#coverModal-{{ $related->id }}">
                                             <img src="{{ asset($related->gambar_cover) }}"
                                                 class="img-fluid w-100 rounded-top"
-                                                style="height: 250px; object-fit: cover;" alt="{{ $related->judul }}">
+                                                style="height: 250px; object-fit: cover;"
+                                                alt="{{ $related->judul }}">
                                             <div class="cover-overlay">
                                                 <i class="fa fa-search-plus fa-2x text-white"></i>
                                                 <p class="text-white mt-2 small">Lihat Cover</p>
@@ -202,4 +262,52 @@
         </div>
     </div>
     <!-- Product Detail End -->
+
+    @push('scripts')
+        <script>
+            function decrementQty() {
+                const input = document.getElementById('qty-input');
+                const currentValue = parseInt(input.value);
+                if (currentValue > 1) {
+                    input.value = currentValue - 1;
+                }
+            }
+
+            function incrementQty(maxStock) {
+                const input = document.getElementById('qty-input');
+                const currentValue = parseInt(input.value);
+                if (currentValue < maxStock) {
+                    input.value = currentValue + 1;
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Stok Terbatas',
+                        text: 'Stok buku tidak mencukupi untuk menambah jumlah lagi.',
+                        confirmButtonColor: '#28a745'
+                    });
+                }
+            }
+
+            // Ensure the input value doesn't exceed max stock on manual input
+            document.getElementById('qty-input').addEventListener('change', function() {
+                    const maxStock = parseInt(this.getAttribute('max'));
+                    const currentValue = parseInt(this.value);
+
+                    if (isNaN(currentValue) || currentValue < 1) {
+                        this.value = 1;
+                    } else if (currentValue > maxStock) {
+                        this.value = maxStock;
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Stok Terbatas',
+                            text: 'Jumlah telah disesuaikan dengan stok yang tersedia.',
+                            confirmButtonColor: '#28a745'
+                        });
+                    }
+                } else {
+                    alert('Stok tidak mencukupi!');
+                }
+            }
+        </script>
+    @endpush
 </x-layouts.frontend.master>

@@ -12,6 +12,8 @@
     <!-- Libraries Stylesheet -->
     <link href="{{ URL::asset('frontend/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('frontend/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ URL::asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Template Stylesheet -->

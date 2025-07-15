@@ -141,10 +141,6 @@
                                                     class="btn border border-secondary rounded-pill px-3 text-primary me-1">
                                                     <i class="fa fa-eye text-primary"></i>
                                                 </a>
-                                                <a href="#"
-                                                    class="btn border border-secondary rounded-pill px-3 text-primary">
-                                                    <i class="fa fa-shopping-bag text-primary"></i>
-                                                </a>
                                             </div>
                                         </div>
                                     </div>

@@ -39,11 +39,22 @@
                 </div>
                 <div class="d-flex m-3 me-0">
                     @auth
-                        <a href="#" class="position-relative me-4 my-auto">
+                        <a href="{{ route('customer.orders.index') }}"
+                            class="position-relative me-4 my-auto {{ request()->routeIs('customer.orders.*') ? 'text-primary' : '' }}">
                             <i class="fa fa-shopping-bag fa-2x"></i>
-                            <span
-                                class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
-                                style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                        </a>
+                        <a href="{{ route('refunds.index') }}"
+                            class="position-relative me-4 my-auto {{ request()->routeIs('refunds.*') ? 'text-primary' : '' }}">
+                            <i class="fa fa-money-bill fa-2x"></i>
+                        </a>
+                        <a href="{{ route('customer.cart.index') }}"
+                            class="position-relative me-4 my-auto {{ request()->routeIs('customer.cart.*') ? 'text-primary' : '' }}">
+                            <i class="fa fa-shopping-cart fa-2x"></i>
+                            @if (auth()->check() && auth()->user()->keranjang->count() > 0)
+                                <span
+                                    class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
+                                    style="top: -5px; left: 15px; height: 20px; min-width: 20px;">{{ auth()->user()->keranjang->count() }}</span>
+                            @endif
                         </a>
                         <a href="#" class="my-auto d-flex align-items-center gap-2" data-bs-toggle="modal"
                             data-bs-target="#profileModal">

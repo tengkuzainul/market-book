@@ -1,45 +1,4 @@
 <x-layouts.frontend.master :pageName="$pageName">
-    <style>
-        /* Custom styling for quantity input */
-        .quantity {
-            display: flex;
-        }
-
-        .quantity .form-control:focus {
-            box-shadow: none;
-            border-color: #28a745;
-        }
-
-        .quantity .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            width: 35px;
-        }
-
-        .quantity .btn-minus {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        .quantity .btn-plus {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-
-        /* Hide number input arrows */
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
-    </style>
-
     <!-- Hero Start -->
     <div class="container-fluid py-5 mb-5 hero-header">
         <div class="container py-5">
@@ -102,27 +61,28 @@
                                             class="d-inline">
                                             @csrf
                                             @method('PUT')
-                                            <div class="input-group quantity" style="width: 120px;">
-                                                <button type="button" class="btn btn-primary btn-minus"
-                                                    onclick="decrementQuantity(this)">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
+                                            <div class="input-group quantity" style="width: 100px;">
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-sm btn-primary btn-minus"
+                                                        onclick="decrementQuantity(this)">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                </div>
                                                 <input type="number" name="jumlah"
-                                                    class="form-control bg-light fw-bold fs-6 text-center border-primary quantity-input"
+                                                    class="form-control form-control-sm text-center quantity-input"
                                                     value="{{ $item->jumlah }}" min="1"
                                                     max="{{ $item->buku->stok }}">
-                                                <button type="button" class="btn btn-primary btn-plus"
-                                                    onclick="incrementQuantity(this, {{ $item->buku->stok }})">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-sm btn-primary btn-plus"
+                                                        onclick="incrementQuantity(this, {{ $item->buku->stok }})">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div class="mt-2">
-                                                <button type="submit" class="btn btn-success btn-sm update-cart-btn"
-                                                    style="display: none;">
-                                                    <i class="fa fa-sync-alt"></i> Update
-                                                </button>
-                                                <small class="text-muted d-block">Stok: {{ $item->buku->stok }}</small>
-                                            </div>
+                                            <button type="submit" class="btn btn-sm btn-success mt-2 update-cart-btn"
+                                                style="display: none;">
+                                                <i class="fa fa-sync-alt"></i> Update
+                                            </button>
                                         </form>
                                     </td>
                                     <td class="align-middle">
@@ -133,9 +93,9 @@
                                             class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-danger btn-sm"
-                                                onclick="confirmDelete(this.form)">
-                                                <i class="fa fa-trash me-1"></i> Hapus
+                                            <button type="submit" class="btn btn-sm rounded-circle bg-light border"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')">
+                                                <i class="fa fa-times text-danger"></i>
                                             </button>
                                         </form>
                                     </td>
@@ -178,12 +138,7 @@
                     inputElement.value = currentValue + 1;
                     showUpdateButton(element);
                 } else {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Stok Terbatas',
-                        text: 'Stok buku tidak mencukupi untuk menambah jumlah lagi.',
-                        confirmButtonColor: '#28a745'
-                    });
+                    alert('Stok tidak mencukupi');
                 }
             }
 
@@ -201,40 +156,8 @@
                 updateBtn.style.display = 'inline-block';
             }
 
-            function confirmDelete(form) {
-                Swal.fire({
-                    title: 'Hapus Item?',
-                    text: 'Apakah Anda yakin ingin menghapus item ini dari keranjang?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya, Hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            }
-
             document.querySelectorAll('.quantity-input').forEach(input => {
                 input.addEventListener('change', function() {
-                    const maxStock = parseInt(this.getAttribute('max'));
-                    const currentValue = parseInt(this.value);
-
-                    if (isNaN(currentValue) || currentValue < 1) {
-                        this.value = 1;
-                    } else if (currentValue > maxStock) {
-                        this.value = maxStock;
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Stok Terbatas',
-                            text: 'Jumlah telah disesuaikan dengan stok yang tersedia.',
-                            confirmButtonColor: '#28a745'
-                        });
-                    }
-
                     showUpdateButton(this);
                 });
             });
