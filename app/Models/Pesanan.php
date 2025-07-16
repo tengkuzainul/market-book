@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Pesanan extends Model
 {
@@ -20,7 +24,7 @@ class Pesanan extends Model
     /**
      * Get the user that made the order
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -28,7 +32,7 @@ class Pesanan extends Model
     /**
      * Get the order items for this order
      */
-    public function items()
+    public function items(): HasMany
     {
         return $this->hasMany(PesananItem::class);
     }
@@ -36,7 +40,7 @@ class Pesanan extends Model
     /**
      * Get the rekening pembayaran for this order
      */
-    public function rekeningPembayaran()
+    public function rekeningPembayaran(): BelongsTo
     {
         return $this->belongsTo(RekeningPembayaran::class);
     }
@@ -44,9 +48,17 @@ class Pesanan extends Model
     /**
      * Get the refund for this order
      */
-    public function refund()
+    public function refund(): HasOne
     {
         return $this->hasOne(Refund::class);
+    }
+
+    /**
+     * Get all mutasi barang for this order
+     */
+    public function mutasiBarangs(): MorphMany
+    {
+        return $this->morphMany(MutasiBarang::class, 'referensi', 'referensi_tipe', 'referensi_id');
     }
 
     /**

@@ -52,13 +52,27 @@
 
                 <li class="pc-item pc-caption">
                     <label>Inventory</label>
-                    <i class="ti ti-shopping-cart"></i>
+                    <i class="ti ti-box"></i>
                 </li>
                 <li class="pc-item">
-                    <a href="{{ route('admin.orders.index') }}"
-                        class="pc-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.barang-masuk.index') }}"
+                        class="pc-link {{ request()->routeIs('admin.barang-masuk.*') ? 'active' : '' }}">
                         <span class="pc-micon"><i class="ti ti-box"></i></span>
                         <span class="pc-mtext">Barang Masuk</span>
+                    </a>
+                </li>
+                <li class="pc-item">
+                    <a href="{{ route('admin.mutasi-barang.index') }}"
+                        class="pc-link {{ request()->routeIs('admin.mutasi-barang.*') ? 'active' : '' }}">
+                        <span class="pc-micon"><i class="ti ti-file-analytics"></i></span>
+                        <span class="pc-mtext">Mutasi Barang</span>
+                    </a>
+                </li>
+                <li class="pc-item">
+                    <a href="{{ route('admin.laporan-inventory') }}"
+                        class="pc-link {{ request()->routeIs('admin.laporan-inventory') ? 'active' : '' }}">
+                        <span class="pc-micon"><i class="ti ti-chart-line"></i></span>
+                        <span class="pc-mtext">Laporan Inventory</span>
                     </a>
                 </li>
 
@@ -78,12 +92,6 @@
                         class="pc-link {{ request()->routeIs('admin.refunds.*') ? 'active' : '' }}">
                         <span class="pc-micon"><i class="ti ti-cash-banknote-off"></i></span>
                         <span class="pc-mtext">Manajemen Refund</span>
-                    </a>
-                </li>
-                <li class="pc-item">
-                    <a href="#" class="pc-link {{ request()->routeIs('') ? 'active' : '' }}">
-                        <span class="pc-micon"><i class="ti ti-file"></i></span>
-                        <span class="pc-mtext">Mutasi Barang</span>
                     </a>
                 </li>
             </ul>

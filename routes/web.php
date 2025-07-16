@@ -77,6 +77,15 @@ Route::middleware('auth', 'admin')->group(function () {
         Route::get('/refunds/{refund}', [\App\Http\Controllers\Admin\RefundController::class, 'show'])->name('refunds.show');
         Route::post('/refunds/{refund}/process', [\App\Http\Controllers\Admin\RefundController::class, 'process'])->name('refunds.process');
         Route::post('/refunds/{refund}/upload-proof', [\App\Http\Controllers\Admin\RefundController::class, 'uploadProof'])->name('refunds.upload-proof');
+
+        // Inventory Management
+        Route::resource('barang-masuk', \App\Http\Controllers\Admin\BarangMasukController::class);
+        Route::post('/barang-masuk/{barangMasuk}/approve', [\App\Http\Controllers\Admin\BarangMasukController::class, 'approve'])->name('barang-masuk.approve');
+        Route::post('/barang-masuk/{barangMasuk}/reject', [\App\Http\Controllers\Admin\BarangMasukController::class, 'reject'])->name('barang-masuk.reject');
+
+        Route::get('/mutasi-barang', [\App\Http\Controllers\Admin\MutasiBarangController::class, 'index'])->name('mutasi-barang.index');
+        Route::get('/mutasi-barang/{mutasiBarang}', [\App\Http\Controllers\Admin\MutasiBarangController::class, 'show'])->name('mutasi-barang.show');
+        Route::get('/laporan-inventory', [\App\Http\Controllers\Admin\MutasiBarangController::class, 'laporan'])->name('laporan-inventory');
     });
 });
 

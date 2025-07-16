@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\MutasiBarang;
 use App\Models\Pesanan;
 use App\Models\Refund;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class RefundController extends Controller
@@ -39,20 +41,34 @@ class RefundController extends Controller
                               'catatan_admin' => 'nullable|string|max:500',
                     ]);
 
-                    // Update the refund status
-                    $refund->status = $request->status;
-                    $refund->catatan_admin = $request->catatan_admin;
-                    $refund->save();
+                    DB::transaction(function () use ($request, $refund) {
+                              // Update the refund status
+                              $refund->status = $request->status;
+                              $refund->catatan_admin = $request->catatan_admin;
+                              $refund->save();
 
-                    // If completed (selesai), update the order status
-                    if ($request->status == 'selesai') {
-                              $refund->pesanan->status = 'refunded';
-                              $refund->pesanan->save();
-                    } elseif ($request->status == 'ditolak') {
-                              // If rejected (ditolak), revert the order status to "dibatalkan" only
-                              $refund->pesanan->status = 'dibatalkan';
-                              $refund->pesanan->save();
-                    }
+                              // If completed (selesai), update the order status and restore stock
+                              if ($request->status == 'selesai') {
+                                        $refund->pesanan->status = 'refunded';
+                                        $refund->pesanan->save();
+
+                                        // Restore stock for each item and record mutasi
+                                        foreach ($refund->pesanan->items as $item) {
+                                                  MutasiBarang::catatMutasi(
+                                                            $item->buku_id,
+                                                            'retur',
+                                                            $item->jumlah,
+                                                            'Refund pesanan ' . $refund->pesanan->kode_pesanan,
+                                                            $refund,
+                                                            Auth::id()
+                                                  );
+                                        }
+                              } elseif ($request->status == 'ditolak') {
+                                        // If rejected (ditolak), revert the order status to "dibatalkan" only
+                                        $refund->pesanan->status = 'dibatalkan';
+                                        $refund->pesanan->save();
+                              }
+                    });
 
                     $statusText = $request->status == 'selesai' ? 'disetujui dan selesai' : 'ditolak';
                     Alert::success('Berhasil', 'Refund telah ' . $statusText);

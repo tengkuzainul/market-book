@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Buku;
 use App\Models\Keranjang;
+use App\Models\MutasiBarang;
 use App\Models\Pesanan;
 use App\Models\PesananItem;
 use App\Models\RekeningPembayaran;
@@ -82,9 +83,9 @@ class OrderController extends Controller
                 'catatan' => $request->catatan,
             ]);
 
-            // Create order items and update stock
+            // Create order items and record mutations
             foreach ($cartItems as $item) {
-                PesananItem::create([
+                $pesananItem = PesananItem::create([
                     'pesanan_id' => $pesanan->id,
                     'buku_id' => $item->buku_id,
                     'judul_buku' => $item->buku->judul,
@@ -93,11 +94,15 @@ class OrderController extends Controller
                     'subtotal' => $item->subtotal,
                 ]);
 
-                // Update book stock
-                $buku = Buku::find($item->buku_id);
-                $buku->update([
-                    'stok' => $buku->stok - $item->jumlah
-                ]);
+                // Record mutasi barang (otomatis update stok)
+                MutasiBarang::catatMutasi(
+                    $item->buku_id,
+                    'keluar',
+                    $item->jumlah,
+                    "Penjualan - {$pesanan->kode_pesanan}",
+                    $pesanan,
+                    Auth::id()
+                );
             }
 
             // Empty the cart
@@ -187,14 +192,17 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
-            // Restore stock
+            // Restore stock with mutation record
             foreach ($pesanan->items as $item) {
-                $buku = Buku::find($item->buku_id);
-                if ($buku) {
-                    $buku->update([
-                        'stok' => $buku->stok + $item->jumlah
-                    ]);
-                }
+                // Record mutasi barang untuk pengembalian stok
+                MutasiBarang::catatMutasi(
+                    $item->buku_id,
+                    'retur',
+                    $item->jumlah,
+                    "Pembatalan pesanan - {$pesanan->kode_pesanan}",
+                    $pesanan,
+                    Auth::id()
+                );
             }
 
             // Update order status
