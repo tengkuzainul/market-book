@@ -101,7 +101,7 @@
                         <h5>Data Mutasi Barang</h5>
                         <div>
                             <a href="{{ route('admin.laporan-inventory') }}" class="btn btn-success me-2">
-                                <i class="ti ti-file-export"></i> Export Laporan
+                                <i class="ti ti-file-export"></i> Lihat Laporan
                             </a>
                             <a href="{{ route('admin.mutasi-barang.index') }}" class="btn btn-secondary"
                                 onclick="resetFilter()">

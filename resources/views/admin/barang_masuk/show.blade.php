@@ -129,13 +129,13 @@
                     </div>
                 </div>
 
-                @if ($barangMasuk->status == 'approved' && $barangMasuk->mutasiBarang->count() > 0)
+                @if ($barangMasuk->status == 'approved' && $barangMasuk->mutasiBarangs->count() > 0)
                     <div class="card mt-3">
                         <div class="card-header">
                             <h5>Mutasi Terkait</h5>
                         </div>
                         <div class="card-body">
-                            @foreach ($barangMasuk->mutasiBarang as $mutasi)
+                            @foreach ($barangMasuk->mutasiBarangs as $mutasi)
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <div>
                                         <small
