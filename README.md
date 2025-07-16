@@ -54,7 +54,7 @@
 
 ### Backend
 
--   **[Laravel 10](https://laravel.com/)** - Framework PHP
+-   **[Laravel 12](https://laravel.com/)** - Framework PHP
 -   **[MySQL](https://mysql.com/)** - Database
 -   **[Eloquent ORM](https://laravel.com/docs/eloquent)** - Object-Relational Mapping
 -   **[Blade](https://laravel.com/docs/blade)** - Template Engine
