@@ -38,6 +38,22 @@
         input[type="number"] {
             -moz-appearance: textfield;
         }
+
+        /* Loading overlay styles */
+        .loading-overlay {
+            font-size: 1.2em;
+            color: #007bff;
+        }
+
+        .quantity-wrapper {
+            position: relative;
+        }
+
+        /* Disable pointer events when loading */
+        .quantity.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
     </style>
 
     <!-- Hero Start -->
@@ -102,25 +118,23 @@
                                             class="d-inline">
                                             @csrf
                                             @method('PUT')
-                                            <div class="input-group quantity" style="width: 120px;">
-                                                <button type="button" class="btn btn-primary btn-minus"
-                                                    onclick="decrementQuantity(this)">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <input type="number" name="jumlah"
-                                                    class="form-control bg-light fw-bold fs-6 text-center border-primary quantity-input"
-                                                    value="{{ $item->jumlah }}" min="1"
-                                                    max="{{ $item->buku->stok }}">
-                                                <button type="button" class="btn btn-primary btn-plus"
-                                                    onclick="incrementQuantity(this, {{ $item->buku->stok }})">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
+                                            <div class="quantity-wrapper">
+                                                <div class="input-group quantity" style="width: 120px;">
+                                                    <button type="button" class="btn btn-primary btn-minus"
+                                                        onclick="decrementQuantity(this)">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                    <input type="number" name="jumlah"
+                                                        class="form-control bg-light fw-bold fs-6 text-center border-primary quantity-input"
+                                                        value="{{ $item->jumlah }}" min="1"
+                                                        max="{{ $item->buku->stok }}">
+                                                    <button type="button" class="btn btn-primary btn-plus"
+                                                        onclick="incrementQuantity(this, {{ $item->buku->stok }})">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div class="mt-2">
-                                                <button type="submit" class="btn btn-success btn-sm update-cart-btn"
-                                                    style="display: none;">
-                                                    <i class="fa fa-sync-alt"></i> Update
-                                                </button>
                                                 <small class="text-muted d-block">Stok: {{ $item->buku->stok }}</small>
                                             </div>
                                         </form>
@@ -167,76 +181,153 @@
             @endif
         </div>
     </div>
-    <!-- Cart Page End -->
-
-    @push('scripts')
+    <!-- Cart Page End --> @push('scripts')
         <script>
+            // Variable untuk mencegah multiple submissions
+            let isSubmitting = false;
+
             function incrementQuantity(element, maxStock) {
+                if (isSubmitting) return;
+
                 const inputElement = element.closest('.quantity').querySelector('.quantity-input');
                 const currentValue = parseInt(inputElement.value);
                 if (currentValue < maxStock) {
                     inputElement.value = currentValue + 1;
-                    showUpdateButton(element);
+                    submitFormWithLoading(element);
                 } else {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Stok Terbatas',
-                        text: 'Stok buku tidak mencukupi untuk menambah jumlah lagi.',
-                        confirmButtonColor: '#28a745'
-                    });
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Stok Terbatas',
+                            text: 'Stok buku tidak mencukupi untuk menambah jumlah lagi.',
+                            confirmButtonColor: '#28a745'
+                        });
+                    } else {
+                        alert('Stok buku tidak mencukupi untuk menambah jumlah lagi.');
+                    }
                 }
             }
 
             function decrementQuantity(element) {
+                if (isSubmitting) return;
+
                 const inputElement = element.closest('.quantity').querySelector('.quantity-input');
                 const currentValue = parseInt(inputElement.value);
                 if (currentValue > 1) {
                     inputElement.value = currentValue - 1;
-                    showUpdateButton(element);
+                    submitFormWithLoading(element);
                 }
             }
 
-            function showUpdateButton(element) {
-                const updateBtn = element.closest('form').querySelector('.update-cart-btn');
-                updateBtn.style.display = 'inline-block';
+            function submitFormWithLoading(element) {
+                if (isSubmitting) return;
+
+                isSubmitting = true;
+                const form = element.closest('form');
+                const quantityWrapper = form.querySelector('.quantity-wrapper');
+                const buttons = form.querySelectorAll('button');
+
+                // Disable buttons to prevent multiple clicks
+                buttons.forEach(btn => btn.disabled = true);
+
+                // Show loading spinner overlay
+                const loadingOverlay = document.createElement('div');
+                loadingOverlay.className = 'loading-overlay position-absolute d-flex align-items-center justify-content-center';
+                loadingOverlay.style.cssText = `
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(255, 255, 255, 0.9);
+                    border-radius: 4px;
+                    z-index: 1000;
+                `;
+                loadingOverlay.innerHTML = '<i class="fa fa-spinner fa-spin text-primary"></i>';
+
+                // Set relative position on quantity wrapper
+                quantityWrapper.style.position = 'relative';
+                quantityWrapper.appendChild(loadingOverlay);
+
+                // Submit form
+                setTimeout(() => {
+                    form.submit();
+                }, 100); // Small delay to show loading animation
             }
 
             function confirmDelete(form) {
-                Swal.fire({
-                    title: 'Hapus Item?',
-                    text: 'Apakah Anda yakin ingin menghapus item ini dari keranjang?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya, Hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        title: 'Hapus Item?',
+                        text: 'Apakah Anda yakin ingin menghapus item ini dari keranjang?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya, Hapus!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Show loading pada button hapus
+                            const deleteBtn = form.querySelector('button[type="button"]');
+                            if (deleteBtn) {
+                                deleteBtn.disabled = true;
+                                deleteBtn.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i> Menghapus...';
+                            }
+                            form.submit();
+                        }
+                    });
+                } else {
+                    // Fallback to native confirm if SweetAlert is not loaded
+                    if (confirm('Apakah Anda yakin ingin menghapus item ini dari keranjang?')) {
+                        const deleteBtn = form.querySelector('button[type="button"]');
+                        if (deleteBtn) {
+                            deleteBtn.disabled = true;
+                            deleteBtn.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i> Menghapus...';
+                        }
                         form.submit();
                     }
-                });
+                }
             }
 
+            // Event listener untuk input manual
             document.querySelectorAll('.quantity-input').forEach(input => {
-                input.addEventListener('change', function() {
-                    const maxStock = parseInt(this.getAttribute('max'));
-                    const currentValue = parseInt(this.value);
+                let timeout;
 
-                    if (isNaN(currentValue) || currentValue < 1) {
-                        this.value = 1;
-                    } else if (currentValue > maxStock) {
-                        this.value = maxStock;
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Stok Terbatas',
-                            text: 'Jumlah telah disesuaikan dengan stok yang tersedia.',
-                            confirmButtonColor: '#28a745'
-                        });
-                    }
+                input.addEventListener('input', function() {
+                    // Clear timeout sebelumnya
+                    clearTimeout(timeout);
 
-                    showUpdateButton(this);
+                    // Set timeout baru untuk menghindari terlalu banyak request
+                    timeout = setTimeout(() => {
+                        const maxStock = parseInt(this.getAttribute('max'));
+                        const currentValue = parseInt(this.value);
+
+                        if (isNaN(currentValue) || currentValue < 1) {
+                            this.value = 1;
+                        } else if (currentValue > maxStock) {
+                            this.value = maxStock;
+                            if (typeof Swal !== 'undefined') {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Stok Terbatas',
+                                    text: 'Jumlah telah disesuaikan dengan stok yang tersedia.',
+                                    confirmButtonColor: '#28a745'
+                                });
+                            } else {
+                                alert(
+                                    'Stok terbatas. Jumlah telah disesuaikan dengan stok yang tersedia.');
+                            }
+                        }
+
+                        // Submit form setelah delay
+                        submitFormWithLoading(this);
+                    }, 1000); // 1 detik delay
                 });
+            });
+
+            // Reset isSubmitting ketika halaman dimuat ulang
+            window.addEventListener('pageshow', function() {
+                isSubmitting = false;
             });
         </script>
     @endpush

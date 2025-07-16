@@ -51,6 +51,18 @@
                 </li>
 
                 <li class="pc-item pc-caption">
+                    <label>Inventory</label>
+                    <i class="ti ti-shopping-cart"></i>
+                </li>
+                <li class="pc-item">
+                    <a href="{{ route('admin.orders.index') }}"
+                        class="pc-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
+                        <span class="pc-micon"><i class="ti ti-box"></i></span>
+                        <span class="pc-mtext">Barang Masuk</span>
+                    </a>
+                </li>
+
+                <li class="pc-item pc-caption">
                     <label>Transaksi</label>
                     <i class="ti ti-shopping-cart"></i>
                 </li>
@@ -66,6 +78,12 @@
                         class="pc-link {{ request()->routeIs('admin.refunds.*') ? 'active' : '' }}">
                         <span class="pc-micon"><i class="ti ti-cash-banknote-off"></i></span>
                         <span class="pc-mtext">Manajemen Refund</span>
+                    </a>
+                </li>
+                <li class="pc-item">
+                    <a href="#" class="pc-link {{ request()->routeIs('') ? 'active' : '' }}">
+                        <span class="pc-micon"><i class="ti ti-file"></i></span>
+                        <span class="pc-mtext">Mutasi Barang</span>
                     </a>
                 </li>
             </ul>
